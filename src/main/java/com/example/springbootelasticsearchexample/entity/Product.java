@@ -8,10 +8,11 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Data //includes @ToString, @Getter, @Setter, @EqualsAndHashCode and @RequiredArgsConstructor
 
 @Document(indexName = "products") // each of the Product object initiated is a document in the products index
 @JsonIgnoreProperties(ignoreUnknown = true) // ignore any additional fields like "_class"
+// model in MVC pattern
 public class Product {
     private int id;
     private String name;

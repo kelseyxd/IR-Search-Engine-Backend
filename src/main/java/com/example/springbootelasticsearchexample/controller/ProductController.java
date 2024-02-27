@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
+// controller layer is generally tied to the Spring API
 @RestController
 @RequestMapping("/apis") // specify the base URL path ("/apis") for all the HTTP endpoints defined in this controller
 public class ProductController {
@@ -34,8 +34,13 @@ public class ProductController {
     }
 
     @PostMapping("/insert")
-    public Product insertProduct(@RequestBody  Product product){
+    public Product insertProduct(@RequestBody Product product){
         return productService.insertProduct(product);
+    }
+
+    @PostMapping("/insertList")
+    public List<Product> insertProductList(@RequestBody ArrayList<Product> products){
+        return productService.insertProductList(products);
     }
 
     @GetMapping("/matchAll") // match all results in ALL index
