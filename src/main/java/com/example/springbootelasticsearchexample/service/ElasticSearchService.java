@@ -4,7 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.example.springbootelasticsearchexample.util.ElasticSearchUtil;
-import com.example.springbootelasticsearchexample.entity.Product;
+import com.example.springbootelasticsearchexample.entity.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +26,23 @@ public class ElasticSearchService {
     }
     //matchAllProducts video content
 
-    public SearchResponse<Product> matchAllProductsServices() throws IOException { // return Product objects
+    public SearchResponse<Review> matchAllProductsServices() throws IOException { // return Product objects
         Supplier<Query> supplier  = ElasticSearchUtil.supplier();
-        SearchResponse<Product> searchResponse = elasticsearchClient.search(s->s.index("products").query(supplier.get()),Product.class);
+        SearchResponse<Review> searchResponse = elasticsearchClient.search(s->s.index("reviews").query(supplier.get()), Review.class);
         System.out.println("elasticsearch query is "+supplier.get().toString());
         return searchResponse;
     }
 
-    public SearchResponse<Product> matchProductsWithName(String fieldValue) throws IOException { // return only products with matching names // pass in the name as argument
+    public SearchResponse<Review> matchProductsWithName(String fieldValue) throws IOException { // return only products with matching names // pass in the name as argument
         Supplier<Query> supplier  = ElasticSearchUtil.supplierWithNameField(fieldValue);
-        SearchResponse<Product> searchResponse = elasticsearchClient.search(s->s.index("products").query(supplier.get()),Product.class);
+        SearchResponse<Review> searchResponse = elasticsearchClient.search(s->s.index("reviews").query(supplier.get()), Review.class);
+        System.out.println("elasticsearch query is "+supplier.get().toString());
+        return searchResponse;
+    }
+
+    public SearchResponse<Review> matchProductsWithCountry(String fieldValue) throws IOException { // return only products with matching names // pass in the name as argument
+        Supplier<Query> supplier  = ElasticSearchUtil.supplierWithCountryField(fieldValue);
+        SearchResponse<Review> searchResponse = elasticsearchClient.search(s->s.index("reviews").query(supplier.get()), Review.class);
         System.out.println("elasticsearch query is "+supplier.get().toString());
         return searchResponse;
     }
