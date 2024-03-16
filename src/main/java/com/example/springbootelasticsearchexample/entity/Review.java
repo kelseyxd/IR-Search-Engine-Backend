@@ -15,9 +15,12 @@ import org.springframework.data.elasticsearch.annotations.Document;
 // model in MVC pattern
 public class Review {
     private int id;
+    private String category;
     private String name;
     private int rating;
-    private String review;
     private String date;
     private String country;
+    private float price;
+    private String title;
+    private String content;
 }
