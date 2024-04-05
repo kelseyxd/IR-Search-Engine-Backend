@@ -27,16 +27,27 @@ public class ElasticSearchUtil {
 
     public static MatchQuery matchQueryWithNameField(String fieldValue){
         val  matchQuery = new MatchQuery.Builder();
-        return matchQuery.field("name").query(fieldValue).build(); // similar to postman
+        return matchQuery.field("product_title").query(fieldValue).build(); // similar to postman
     }
 
-
-    public static Supplier<Query> supplierWithCountryField(String fieldValue){
-        Supplier<Query> supplier = ()->Query.of(q->q.match(matchQueryWithCountryField(fieldValue)));
+    // Get by product ID
+    public static Supplier<Query> supplierWithIdField(String fieldValue){
+        Supplier<Query> supplier = ()->Query.of(q->q.match(matchQueryWithIdField(fieldValue)));
         return supplier;
     }
-    public static MatchQuery matchQueryWithCountryField(String fieldValue){
+
+    public static MatchQuery matchQueryWithIdField(String fieldValue){
         val  matchQuery = new MatchQuery.Builder();
-        return matchQuery.field("country").query(fieldValue).build(); // similar to postman
+        return matchQuery.field("product_id").query(fieldValue).build();
     }
+
+
+//    public static Supplier<Query> supplierWithCountryField(String fieldValue){
+//        Supplier<Query> supplier = ()->Query.of(q->q.match(matchQueryWithCountryField(fieldValue)));
+//        return supplier;
+//    }
+//    public static MatchQuery matchQueryWithCountryField(String fieldValue){
+//        val  matchQuery = new MatchQuery.Builder();
+//        return matchQuery.field("country").query(fieldValue).build(); // similar to postman
+//    }
 }

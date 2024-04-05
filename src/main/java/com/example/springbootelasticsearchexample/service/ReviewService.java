@@ -29,11 +29,11 @@ public class ReviewService {
     }
 
 //    how does the index get updated?
-    public Review updateReview(Review review, int id) {
-        Review review1 = reviewRepo.findById(id).get();
-        review1.setRating(review.getRating());
-        return review1;
-    }
+//    public Review updateReview(Review review, int id) {
+//        Review review1 = reviewRepo.findById(id).get();
+//        review1.setRating(review.getRating());
+//        return review1;
+//    }
 
     public void deleteReview(int id ) {
         reviewRepo.deleteById(id);

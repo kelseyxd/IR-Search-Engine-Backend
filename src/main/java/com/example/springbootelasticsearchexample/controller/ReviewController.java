@@ -6,9 +6,9 @@ package com.example.springbootelasticsearchexample.controller;
 
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import com.example.springbootelasticsearchexample.entity.Review;
+import com.example.springbootelasticsearchexample.entity.Product;
 import com.example.springbootelasticsearchexample.service.ElasticSearchService;
-import com.example.springbootelasticsearchexample.service.ReviewService;
+import com.example.springbootelasticsearchexample.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,24 +23,24 @@ import java.util.Map;
 public class ReviewController {
 
     @Autowired
-    private ReviewService reviewService;
+    private ProductService productService;
 
     @Autowired
     private ElasticSearchService elasticSearchService;
 
     @GetMapping("/findAll") // It specifies that the method findAll() should be called when a GET request is made to this endpoint
-    Iterable<Review> findAll(){
-        return reviewService.getReviews();
+    Iterable<Product> findAll(){
+        return productService.getProducts();
     }
 
     @PostMapping("/insert")
-    public Review insertReview(@RequestBody Review review){
-        return reviewService.insertReview(review);
+    public Product insertProduct(@RequestBody Product product){
+        return productService.insertProduct(product);
     }
 
     @PostMapping("/insertList")
-    public List<Review> insertReviewList(@RequestBody ArrayList<Review> reviews){
-        return reviewService.insertReviewList(reviews);
+    public List<Product> insertProductList(@RequestBody ArrayList<Product> products){
+        return productService.insertProductList(products);
     }
 
     @GetMapping("/matchAll") // match all results in ALL index
@@ -51,45 +51,60 @@ public class ReviewController {
     }
 
     @GetMapping("/matchAllProducts") // match all results in Product index
-    public List<Review> matchAllProducts() throws IOException { // return the list of Products
-        SearchResponse<Review> searchResponse =  elasticSearchService.matchAllProductsServices();
+    public List<Product> matchAllProducts() throws IOException { // return the list of Products
+        SearchResponse<Product> searchResponse =  elasticSearchService.matchAllProductsServices();
         System.out.println(searchResponse.hits().hits().toString());
 
-        List<Hit<Review>> listOfHits= searchResponse.hits().hits();
-        List<Review> listOfReviews = new ArrayList<>();
-        for(Hit<Review> hit : listOfHits){ // iterate through listOfHits to append each of the product to listOfProducts
-            listOfReviews.add(hit.source()); // hit.source has the product entity details
+        List<Hit<Product>> listOfHits= searchResponse.hits().hits();
+        List<Product> listOfProducts = new ArrayList<>();
+        for(Hit<Product> hit : listOfHits){ // iterate through listOfHits to append each of the product to listOfProducts
+            listOfProducts.add(hit.source()); // hit.source has the product entity details
         }
-        return listOfReviews;
+        return listOfProducts;
     }
 
     @GetMapping("/matchAllProducts/{fieldValue}")
-    public List<Review> matchAllProductsWithName(@PathVariable String fieldValue) throws IOException {
-        SearchResponse<Review> searchResponse =  elasticSearchService.matchProductsWithName(fieldValue);
+    public List<Product> matchAllProductsWithName(@PathVariable String fieldValue) throws IOException {
+        SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithName(fieldValue);
         System.out.println(searchResponse.hits().hits().toString());
 
-        List<Hit<Review>> listOfHits= searchResponse.hits().hits();
-        List<Review> listOfReviews = new ArrayList<>();
-        for(Hit<Review> hit : listOfHits){
+        List<Hit<Product>> listOfHits= searchResponse.hits().hits();
+        List<Product> listOfProducts = new ArrayList<>();
+        for(Hit<Product> hit : listOfHits){
             System.out.println("Score: " + hit.score()); // Print the hit score
-            System.out.println(hit.source().toString()); // Print the product
-            listOfReviews.add(hit.source());
+//            System.out.println(hit.source().toString()); // Print the product
+            listOfProducts.add(hit.source());
         }
-        return listOfReviews;
+        return listOfProducts;
     }
 
-    @GetMapping("/matchAllCountries/{fieldValue}")
-    public List<Review> matchAllProductsWithCountry(@PathVariable String fieldValue) throws IOException {
-        SearchResponse<Review> searchResponse =  elasticSearchService.matchProductsWithCountry(fieldValue);
+    @GetMapping("/matchProductId/{fieldValue}")
+    public List<Product> matchAllProductsWithId(@PathVariable String fieldValue) throws IOException {
+        SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithId(fieldValue);
         System.out.println(searchResponse.hits().hits().toString());
 
-        List<Hit<Review>> listOfHits= searchResponse.hits().hits();
-        List<Review> listOfReviews = new ArrayList<>();
-        for(Hit<Review> hit : listOfHits){
+        List<Hit<Product>> listOfHits= searchResponse.hits().hits();
+        List<Product> listOfProducts = new ArrayList<>();
+        for(Hit<Product> hit : listOfHits){
             System.out.println("Score: " + hit.score()); // Print the hit score
-            System.out.println(hit.source().toString()); // Print the product
-            listOfReviews.add(hit.source());
+//            System.out.println(hit.source().toString()); // Print the product
+            listOfProducts.add(hit.source());
         }
-        return listOfReviews;
+        return listOfProducts;
     }
+
+//    @GetMapping("/matchAllCountries/{fieldValue}")
+//    public List<Product> matchAllProductsWithCountry(@PathVariable String fieldValue) throws IOException {
+//        SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithCountry(fieldValue);
+//        System.out.println(searchResponse.hits().hits().toString());
+//
+//        List<Hit<Product>> listOfHits= searchResponse.hits().hits();
+//        List<Product> listOfProducts = new ArrayList<>();
+//        for(Hit<Product> hit : listOfHits){
+//            System.out.println("Score: " + hit.score()); // Print the hit score
+//            System.out.println(hit.source().toString()); // Print the product
+//            listOfProducts.add(hit.source());
+//        }
+//        return listOfProducts;
+//    }
 }

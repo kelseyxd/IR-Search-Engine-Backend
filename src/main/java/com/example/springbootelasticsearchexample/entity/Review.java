@@ -1,26 +1,23 @@
 package com.example.springbootelasticsearchexample.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.annotation.Id;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data //includes @ToString, @Getter, @Setter, @EqualsAndHashCode and @RequiredArgsConstructor
-
-@Document(indexName = "reviews") // each of the Product object initiated is a document in the products index
-@JsonIgnoreProperties(ignoreUnknown = true) // ignore any additional fields like "_class"
-// model in MVC pattern
+@Data
 public class Review {
-    private int id;
-    private String category;
-    private String name;
-    private int rating;
-    private String date;
-    private String country;
-    private float price;
+    @Id
+    private String id;
+    private double rating;
     private String title;
+
+    private String date;
+
+    private String country;
     private String content;
+    private int sentiment;
 }
