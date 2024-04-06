@@ -50,22 +50,26 @@ public class ReviewController {
         return searchResponse.hits().hits().toString();
     }
 
-    @GetMapping("/matchAllProducts") // match all results in Product index
-    public List<Product> matchAllProducts() throws IOException { // return the list of Products
-        SearchResponse<Product> searchResponse =  elasticSearchService.matchAllProductsServices();
+    @GetMapping("/matchAllProducts")
+    public List<Product> matchAllProducts(@RequestParam(defaultValue = "1") int page,
+                                         @RequestParam(defaultValue = "10") int size) throws IOException {
+        SearchResponse<Product> searchResponse = elasticSearchService.matchAllProductsServices(page, size);
         System.out.println(searchResponse.hits().hits().toString());
 
-        List<Hit<Product>> listOfHits= searchResponse.hits().hits();
-        List<Product> listOfProducts = new ArrayList<>();
-        for(Hit<Product> hit : listOfHits){ // iterate through listOfHits to append each of the product to listOfProducts
-            listOfProducts.add(hit.source()); // hit.source has the product entity details
+        List<Hit<Product>> listOfHits = searchResponse.hits().hits();
+        List<Product> listOfReviews = new ArrayList<>();
+        for (Hit<Product> hit : listOfHits) {
+            listOfReviews.add(hit.source());
         }
-        return listOfProducts;
+        return listOfReviews;
     }
 
+
     @GetMapping("/matchAllProducts/{fieldValue}")
-    public List<Product> matchAllProductsWithName(@PathVariable String fieldValue) throws IOException {
-        SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithName(fieldValue);
+    public List<Product> matchAllProductsWithName(@PathVariable String fieldValue,
+                                                  @RequestParam(defaultValue = "1") int page,
+                                                  @RequestParam(defaultValue = "10") int size) throws IOException {
+        SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithName(fieldValue, page, size);
         System.out.println(searchResponse.hits().hits().toString());
 
         List<Hit<Product>> listOfHits= searchResponse.hits().hits();
