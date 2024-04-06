@@ -97,18 +97,18 @@ public class ReviewController {
         return listOfProducts;
     }
 
-//    @GetMapping("/matchAllCountries/{fieldValue}")
-//    public List<Product> matchAllProductsWithCountry(@PathVariable String fieldValue) throws IOException {
-//        SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithCountry(fieldValue);
-//        System.out.println(searchResponse.hits().hits().toString());
-//
-//        List<Hit<Product>> listOfHits= searchResponse.hits().hits();
-//        List<Product> listOfProducts = new ArrayList<>();
-//        for(Hit<Product> hit : listOfHits){
-//            System.out.println("Score: " + hit.score()); // Print the hit score
-//            System.out.println(hit.source().toString()); // Print the product
-//            listOfProducts.add(hit.source());
-//        }
-//        return listOfProducts;
-//    }
+    @GetMapping("/matchProductCat/{fieldValue}")
+    public List<Product> matchProductsWithCategory(@PathVariable String fieldValue) throws IOException {
+        SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithCategory(fieldValue);
+        System.out.println(searchResponse.hits().hits().toString());
+
+        List<Hit<Product>> listOfHits= searchResponse.hits().hits();
+        List<Product> listOfProducts = new ArrayList<>();
+        for(Hit<Product> hit : listOfHits){
+            System.out.println("Score: " + hit.score()); // Print the hit score
+            System.out.println(hit.source().toString()); // Print the product
+            listOfProducts.add(hit.source());
+        }
+        return listOfProducts;
+    }
 }

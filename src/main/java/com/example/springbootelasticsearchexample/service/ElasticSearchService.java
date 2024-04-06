@@ -64,10 +64,10 @@ public class ElasticSearchService {
         return searchResponse;
     }
 
-//    public SearchResponse<Product> matchProductsWithCountry(String fieldValue) throws IOException { // return only products with matching names // pass in the name as argument
-//        Supplier<Query> supplier  = ElasticSearchUtil.supplierWithCountryField(fieldValue);
-//        SearchResponse<Product> searchResponse = elasticsearchClient.search(s->s.index("products").query(supplier.get()), Product.class);
-//        System.out.println("elasticsearch query is "+supplier.get().toString());
-//        return searchResponse;
-//    }
+    public SearchResponse<Product> matchProductsWithCategory(String fieldValue) throws IOException { // return only products with matching names // pass in the name as argument
+        Supplier<Query> supplier  = ElasticSearchUtil.supplierWithCategoryField(fieldValue);
+        SearchResponse<Product> searchResponse = elasticsearchClient.search(s->s.index("products").query(supplier.get()), Product.class);
+        System.out.println("elasticsearch query is "+supplier.get().toString());
+        return searchResponse;
+    }
 }

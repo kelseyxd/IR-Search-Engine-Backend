@@ -42,12 +42,12 @@ public class ElasticSearchUtil {
     }
 
 
-//    public static Supplier<Query> supplierWithCountryField(String fieldValue){
-//        Supplier<Query> supplier = ()->Query.of(q->q.match(matchQueryWithCountryField(fieldValue)));
-//        return supplier;
-//    }
-//    public static MatchQuery matchQueryWithCountryField(String fieldValue){
-//        val  matchQuery = new MatchQuery.Builder();
-//        return matchQuery.field("country").query(fieldValue).build(); // similar to postman
-//    }
+    public static Supplier<Query> supplierWithCategoryField(String fieldValue){
+        Supplier<Query> supplier = ()->Query.of(q->q.match(matchQueryWithCategoryField(fieldValue)));
+        return supplier;
+    }
+    public static MatchQuery matchQueryWithCategoryField(String fieldValue){
+        val  matchQuery = new MatchQuery.Builder();
+        return matchQuery.field("category").query(fieldValue).build(); // similar to postman
+    }
 }
