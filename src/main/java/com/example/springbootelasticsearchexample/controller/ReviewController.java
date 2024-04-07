@@ -6,7 +6,9 @@ package com.example.springbootelasticsearchexample.controller;
 
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import com.example.springbootelasticsearchexample.entity.CustomSearchResponse;
 import com.example.springbootelasticsearchexample.entity.Product;
+import com.example.springbootelasticsearchexample.entity.SuggestionResponse;
 import com.example.springbootelasticsearchexample.service.ElasticSearchService;
 import com.example.springbootelasticsearchexample.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,9 +68,9 @@ public class ReviewController {
 
 
     @GetMapping("/matchAllProducts/{fieldValue}")
-    public List<Product> matchAllProductsWithName(@PathVariable String fieldValue,
-                                                  @RequestParam(defaultValue = "1") int page,
-                                                  @RequestParam(defaultValue = "10") int size) throws IOException {
+    public CustomSearchResponse matchAllProductsWithName(@PathVariable String fieldValue,
+                                                        @RequestParam(defaultValue = "1") int page,
+                                                        @RequestParam(defaultValue = "10") int size) throws IOException {
         SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithName(fieldValue, page, size);
         System.out.println(searchResponse.hits().hits().toString());
 
@@ -79,7 +81,10 @@ public class ReviewController {
 //            System.out.println(hit.source().toString()); // Print the product
             listOfProducts.add(hit.source());
         }
-        return listOfProducts;
+
+        List<SuggestionResponse> suggestions = elasticSearchService.getSuggestionsForName(searchResponse);
+
+        return new CustomSearchResponse(listOfProducts, suggestions);
     }
 
     @GetMapping("/matchProductId/{fieldValue}")
