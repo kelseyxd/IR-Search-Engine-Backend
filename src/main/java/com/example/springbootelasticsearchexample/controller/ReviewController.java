@@ -8,7 +8,7 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.example.springbootelasticsearchexample.entity.CustomSearchResponse;
 import com.example.springbootelasticsearchexample.entity.Product;
-import com.example.springbootelasticsearchexample.entity.SuggestionResponse;
+import com.example.springbootelasticsearchexample.entity.SuggestionAccessible;
 import com.example.springbootelasticsearchexample.service.ElasticSearchService;
 import com.example.springbootelasticsearchexample.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +82,7 @@ public class ReviewController {
             listOfProducts.add(hit.source());
         }
 
-        List<SuggestionResponse> suggestions = elasticSearchService.getSuggestionsForName(searchResponse);
+        List<SuggestionAccessible> suggestions = elasticSearchService.getSuggestionsForName(searchResponse);
 
         return new CustomSearchResponse(listOfProducts, suggestions);
     }

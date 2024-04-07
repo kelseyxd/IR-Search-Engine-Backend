@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class SuggestionResponse {
+public class SuggestionAccessible {
     @JsonProperty("length")
     private int length;
     @JsonProperty("offset")

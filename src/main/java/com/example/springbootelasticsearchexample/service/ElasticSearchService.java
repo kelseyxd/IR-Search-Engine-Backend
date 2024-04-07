@@ -5,7 +5,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.*;
 import co.elastic.clients.json.JsonpMapper;
-import com.example.springbootelasticsearchexample.entity.SuggestionResponse;
+import com.example.springbootelasticsearchexample.entity.SuggestionAccessible;
 import com.example.springbootelasticsearchexample.util.ElasticSearchUtil;
 import com.example.springbootelasticsearchexample.entity.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,34 +77,29 @@ public class ElasticSearchService {
                 Product.class);
 
         System.out.println("Elasticsearch query is: " + supplier.get().toString());
-
-//        List<SuggestionResponse> suggestions = getSuggestionsForName(searchResponse);
-
-        System.out.println("search response suggest" + searchResponse);
-
         return searchResponse;
     }
 
-    public List<SuggestionResponse> getSuggestionsForName(SearchResponse<Product> searchResponse) throws IOException {
+    public List<SuggestionAccessible> getSuggestionsForName(SearchResponse<Product> searchResponse) throws IOException {
         List<Suggestion<Product>> listOfSuggestions = searchResponse.suggest().get("product-name-suggestion");
-        List<SuggestionResponse> listOfSuggestionResponses = new ArrayList<>();
+        List<SuggestionAccessible> listOfSuggestionAccessibles = new ArrayList<>();
 
         JsonpMapper mapper = elasticsearchClient._jsonpMapper();
         ObjectMapper objectMapper = new ObjectMapper(); // Used for JSON deserialization
 
-        for (Suggestion<Product> suggestion : listOfSuggestions) {
+        for (Suggestion<Product> suggestion : listOfSuggestions) { // extract suggestion for every word
             StringWriter writer = new StringWriter();
             try (JsonGenerator generator = mapper.jsonProvider().createGenerator(writer)) {
                 mapper.serialize(suggestion, generator);
             }
-            String result = writer.toString();
+            String result = writer.toString(); // convert suggestion object to string in order to access the json form
 
-            // Deserialize the JSON string to a SuggestionResponse object
-            SuggestionResponse suggestionResponse = objectMapper.readValue(result, SuggestionResponse.class);
-            listOfSuggestionResponses.add(suggestionResponse);
+            // Deserialize the JSON string to a SuggestionAccessible object
+            SuggestionAccessible suggestionAccessible = objectMapper.readValue(result, SuggestionAccessible.class);
+            listOfSuggestionAccessibles.add(suggestionAccessible);
         }
 
-        return listOfSuggestionResponses;
+        return listOfSuggestionAccessibles;
     }
 
     public SearchResponse<Product> matchProductsWithId(String fieldValue) throws IOException { // return only products with matching names // pass in the name as argument
