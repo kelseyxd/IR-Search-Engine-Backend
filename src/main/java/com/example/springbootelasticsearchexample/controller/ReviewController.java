@@ -103,8 +103,10 @@ public class ReviewController {
     }
 
     @GetMapping("/matchProductCat/{fieldValue}")
-    public List<Product> matchProductsWithCategory(@PathVariable String fieldValue) throws IOException {
-        SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithCategory(fieldValue);
+    public List<Product> matchProductsWithCategory(@PathVariable String fieldValue,
+                                                   @RequestParam(defaultValue = "1") int page,
+                                                   @RequestParam(defaultValue = "10") int size) throws IOException {
+        SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithCategory(fieldValue, page, size);
         System.out.println(searchResponse.hits().hits().toString());
 
         List<Hit<Product>> listOfHits= searchResponse.hits().hits();

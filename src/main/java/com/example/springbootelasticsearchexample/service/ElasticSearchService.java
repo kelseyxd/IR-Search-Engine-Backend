@@ -120,9 +120,15 @@ public class ElasticSearchService {
         return searchResponse;
     }
 
-    public SearchResponse<Product> matchProductsWithCategory(String fieldValue) throws IOException { // return only products with matching names // pass in the name as argument
+    public SearchResponse<Product> matchProductsWithCategory(String fieldValue, int page, int size) throws IOException { // return only products with matching names // pass in the name as argument
         Supplier<Query> supplier  = ElasticSearchUtil.supplierWithCategoryField(fieldValue);
-        SearchResponse<Product> searchResponse = elasticsearchClient.search(s->s.index("products").query(supplier.get()), Product.class);
+        int from = (page - 1) * size;
+        SearchResponse<Product> searchResponse = elasticsearchClient.search(
+                s->s.index("products")
+                    .query(supplier.get())
+                    .from(from)
+                    .size(size),
+                Product.class);
         System.out.println("elasticsearch query is "+supplier.get().toString());
         return searchResponse;
     }
