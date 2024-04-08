@@ -25,6 +25,15 @@ public class ElasticSearchUtil {
         return supplier;
     }
 
+//    public static Supplier<Query> supplierWithFuzzyNameField(String fieldValue) {
+//        return () -> Query.of(q -> q
+//                .fuzzy(f -> f
+//                        .field("product_title") // Specify the field you want to apply the fuzzy search on
+//                        .value(fieldValue) // The user's input value to search for
+//                        .fuzziness("AUTO") // Adjust fuzziness level. "AUTO" is a common choice, but you can specify numeric values like "1" or "2" as well.
+//                ));
+//    }
+
     public static MatchQuery matchQueryWithNameField(String fieldValue){
         val  matchQuery = new MatchQuery.Builder();
         return matchQuery.field("product_title").query(fieldValue).build(); // similar to postman
@@ -48,6 +57,6 @@ public class ElasticSearchUtil {
     }
     public static MatchQuery matchQueryWithCategoryField(String fieldValue){
         val  matchQuery = new MatchQuery.Builder();
-        return matchQuery.field("category").query(fieldValue).build(); // similar to postman
+        return matchQuery.field("product_category").query(fieldValue).build(); // similar to postman
     }
 }

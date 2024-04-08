@@ -68,16 +68,27 @@ public class ElasticSearchService {
         );
 
         // Execute the search with the suggester
-        SearchResponse<Product> searchResponse = elasticsearchClient.search(s -> s
-                        .index("products")
-                        .query(supplier.get())
-                        .suggest(suggester) // Add the suggester to your search request
-                        .from(from)
-                        .size(size),
-                Product.class);
+        SearchResponse<Product> searchResponse = executeSearch(supplier, suggester, "products", from, size);
+
+//        // If no hits, perform fuzzy search
+//        if (searchResponse.hits().total().value() == 0) {
+//            Supplier<Query> fuzzySupplier = ElasticSearchUtil.supplierWithFuzzyNameField(fieldValue);
+//            searchResponse = executeSearch(fuzzySupplier, suggester, "products", from, size);
+//            System.out.println("fuzzy search response: " + searchResponse);
+//        }
 
         System.out.println("Elasticsearch query is: " + supplier.get().toString());
         return searchResponse;
+    }
+
+    private SearchResponse<Product> executeSearch(Supplier<Query> querySupplier, Suggester suggester, String index, int from, int size) throws IOException {
+        return elasticsearchClient.search(s -> s
+                        .index(index)
+                        .query(querySupplier.get())
+                        .suggest(suggester)
+                        .from(from)
+                        .size(size),
+                Product.class);
     }
 
     public List<SuggestionAccessible> getSuggestionsForName(SearchResponse<Product> searchResponse) throws IOException {

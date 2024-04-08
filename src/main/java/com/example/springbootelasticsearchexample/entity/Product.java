@@ -22,6 +22,7 @@ public class Product {
     @Id
     private String product_id;
     private String product_title;
+    private String product_category;
     private double price;
     private double rating;
     private int number_of_reviews;
