@@ -27,7 +27,7 @@ public class Product {
     private double rating;
     private int number_of_reviews;
     private boolean availability;
-    private String category;
+    private String image;
 
     @Field(type = FieldType.Nested, includeInParent = true)
     private List<Review> reviews;
