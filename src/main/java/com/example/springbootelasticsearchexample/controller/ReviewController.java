@@ -71,8 +71,18 @@ public class ReviewController {
     public CustomSearchResponse matchAllProductsWithName(@PathVariable String fieldValue,
                                                         @RequestParam(defaultValue = "1") int page,
                                                         @RequestParam(defaultValue = "10") int size) throws IOException {
-        SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithName(fieldValue, page, size);
-        System.out.println(searchResponse.hits().hits().toString());
+        // Start timing
+        long startTime = System.currentTimeMillis();
+
+        // Execute the search
+        SearchResponse<Product> searchResponse = elasticSearchService.matchProductsWithName(fieldValue, page, size);
+
+        // Stop timing
+        long endTime = System.currentTimeMillis();
+        long queryTime = endTime - startTime;
+        System.out.println("Query products(name) execution time: " + queryTime + "ms");
+
+//        System.out.println(searchResponse.hits().hits().toString());
 
         List<Hit<Product>> listOfHits= searchResponse.hits().hits();
         List<Product> listOfProducts = new ArrayList<>();
@@ -89,8 +99,16 @@ public class ReviewController {
 
     @GetMapping("/matchProductId/{fieldValue}")
     public List<Product> matchAllProductsWithId(@PathVariable String fieldValue) throws IOException {
+        // Start timing
+        long startTime = System.currentTimeMillis();
+
         SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithId(fieldValue);
-        System.out.println(searchResponse.hits().hits().toString());
+//        System.out.println(searchResponse.hits().hits().toString());
+
+        // Stop timing
+        long endTime = System.currentTimeMillis();
+        long queryTime = endTime - startTime;
+        System.out.println("Query product ID execution time: " + queryTime + "ms");
 
         List<Hit<Product>> listOfHits= searchResponse.hits().hits();
         List<Product> listOfProducts = new ArrayList<>();
@@ -106,14 +124,21 @@ public class ReviewController {
     public List<Product> matchProductsWithCategory(@PathVariable String fieldValue,
                                                    @RequestParam(defaultValue = "1") int page,
                                                    @RequestParam(defaultValue = "10") int size) throws IOException {
+
+        // Start timing
+        long startTime = System.currentTimeMillis();
         SearchResponse<Product> searchResponse =  elasticSearchService.matchProductsWithCategory(fieldValue, page, size);
-        System.out.println(searchResponse.hits().hits().toString());
+//        System.out.println(searchResponse.hits().hits().toString());
+        // Stop timing
+        long endTime = System.currentTimeMillis();
+        long queryTime = endTime - startTime;
+        System.out.println("Query products (category) execution time: " + queryTime + "ms");
 
         List<Hit<Product>> listOfHits= searchResponse.hits().hits();
         List<Product> listOfProducts = new ArrayList<>();
         for(Hit<Product> hit : listOfHits){
             System.out.println("Score: " + hit.score()); // Print the hit score
-            System.out.println(hit.source().toString()); // Print the product
+//            System.out.println(hit.source().toString()); // Print the product
             listOfProducts.add(hit.source());
         }
         return listOfProducts;
