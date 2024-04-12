@@ -11,7 +11,7 @@ import org.springframework.data.annotation.Id;
 @Data
 public class Review {
     @Id
-    private String id;
+    private String review_id;
     private double rating;
     private String title;
 
@@ -19,5 +19,5 @@ public class Review {
 
     private String country;
     private String content;
-    private int sentiment;
+    private String sentiment;
 }
