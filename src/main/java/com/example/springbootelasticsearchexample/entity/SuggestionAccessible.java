@@ -15,37 +15,11 @@ public class SuggestionAccessible {
     private List<Option> options;
 
     public static class Option {
-        private String text;
-        private float score;
-        private int freq;
-
-        // Getters and setters
-
         @JsonProperty("text")
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
+        private String text;
         @JsonProperty("score")
-        public float getScore() {
-            return score;
-        }
-
-        public void setScore(float score) {
-            this.score = score;
-        }
-
+        private float score;
         @JsonProperty("freq")
-        public int getFreq() {
-            return freq;
-        }
-
-        public void setFreq(int freq) {
-            this.freq = freq;
-        }
+        private int freq;
     }
 }

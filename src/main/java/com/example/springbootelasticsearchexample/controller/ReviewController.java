@@ -83,12 +83,13 @@ public class ReviewController {
         System.out.println("Query products(name) execution time: " + queryTime + "ms");
 
 //        System.out.println(searchResponse.hits().hits().toString());
+        System.out.println("Suggestions: " + searchResponse.suggest().get("product-name-suggestion").toString());
 
         List<Hit<Product>> listOfHits= searchResponse.hits().hits();
         List<Product> listOfProducts = new ArrayList<>();
         for(Hit<Product> hit : listOfHits){
+            System.out.println(hit.source().toString()); // Print the product
             System.out.println("Score: " + hit.score()); // Print the hit score
-//            System.out.println(hit.source().toString()); // Print the product
             listOfProducts.add(hit.source());
         }
 
@@ -113,8 +114,8 @@ public class ReviewController {
         List<Hit<Product>> listOfHits= searchResponse.hits().hits();
         List<Product> listOfProducts = new ArrayList<>();
         for(Hit<Product> hit : listOfHits){
+            System.out.println(hit.source().toString()); // Print the product
             System.out.println("Score: " + hit.score()); // Print the hit score
-//            System.out.println(hit.source().toString()); // Print the product
             listOfProducts.add(hit.source());
         }
         return listOfProducts;
@@ -137,8 +138,8 @@ public class ReviewController {
         List<Hit<Product>> listOfHits= searchResponse.hits().hits();
         List<Product> listOfProducts = new ArrayList<>();
         for(Hit<Product> hit : listOfHits){
+            System.out.println(hit.source().toString()); // Print the product
             System.out.println("Score: " + hit.score()); // Print the hit score
-//            System.out.println(hit.source().toString()); // Print the product
             listOfProducts.add(hit.source());
         }
         return listOfProducts;

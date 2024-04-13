@@ -14,9 +14,7 @@ public class Review {
     private String review_id;
     private double rating;
     private String title;
-
     private String date;
-
     private String country;
     private String content;
     private String sentiment;
